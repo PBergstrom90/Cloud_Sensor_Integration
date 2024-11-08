@@ -1,0 +1,34 @@
+1. ESP32 Device Setup
+├── Configure temperature sensor on ESP32
+├── Establish secure MQTT communication with TLS
+└── Send sensor data to AWS IoT Core using secure MQTT
+
+2. AWS IoT Core Configuration
+├── Create an IoT "Thing" to represent the ESP32 device
+├── Generate and apply security certificates for secure communication
+├── Define an IoT policy to authorize ESP32 data transmission
+└── Set up data routing to forward data securely to ThingsBoard
+
+3. Data Routing from AWS to ThingsBoard (Docker)
+├── Option A: AWS IoT Rule
+│ ├── Configure rule to trigger data forwarding to ThingsBoard
+│ └── Choose HTTP or MQTT protocol for integration
+└── Option B: AWS Lambda Function
+├── Create Lambda function to format and route data
+└── Define a trigger in AWS IoT Core to activate the function
+
+4. ThingsBoard Integration
+├── Create or configure device in ThingsBoard to receive data
+├── Set up ThingsBoard to receive data from AWS via MQTT or HTTP
+├── Map incoming data to ThingsBoard telemetry
+└── Test connectivity to ensure data reaches ThingsBoard
+
+5. Dashboard Creation in ThingsBoard
+├── Design and customize dashboard for telemetry data display
+├── Set up widgets to visualize data (e.g., temperature)
+└── Assign dashboard to device or customer for easy access
+
+6. Testing and Validation
+├── Test data flow end-to-end from ESP32 to ThingsBoard
+├── Verify data accuracy and consistency across platforms
+└── Fine-tune MQTT/HTTP settings for optimal performance
