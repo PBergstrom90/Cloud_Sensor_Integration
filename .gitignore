@@ -1,0 +1,8 @@
+.pio
+vscode/.browse.c_cpp.db*
+ESP32Sensor/.vscode/c_cpp_properties.json
+ESP32Sensor/.vscode/launch.json
+ESP32Sensor/.vscode/ipch
+ESP32Sensor/data/
+ESP32Sensor/include/secrets.h
+.env

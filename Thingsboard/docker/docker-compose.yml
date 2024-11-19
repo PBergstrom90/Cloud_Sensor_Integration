@@ -1,0 +1,35 @@
+services:
+  thingsboard:
+    restart: always
+    image: "thingsboard/tb-postgres:latest"
+    container_name: thingsboard
+    ports:
+      - "8080:9090"   # ThingsBoard Web UI
+      - "1883:1883"   # MQTT (optional if not used)
+      - "7070:7070"   # CoAP (optional if not used)
+      - "5683-5688:5683-5688/udp"  # CoAP over UDP (optional if not used)
+    environment:
+      TB_QUEUE_TYPE: in-memory
+    volumes:
+      - thingsboard-data:/data
+      - thingsboard-logs:/var/log/thingsboard
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "1884:1884"
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_logs:/mosquitto/log
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+volumes:
+  thingsboard-data:
+    external: false
+  thingsboard-logs:
+    external: false
+  mosquitto_data:
+    external: false
+  mosquitto_logs:
+    external: false
