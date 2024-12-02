@@ -16,16 +16,19 @@ The solution is built to expand and scale, follow security best practices, and i
 ## Hardware
 
 ### Components:
+
 - **ESP32-S3 DevKit**: Main microcontroller for transmitting sensor data.
 - **DHT11 Sensor**: Captures temperature and humidity data.
 - Additional supporting components like resistors, wires, and a breadboard.
 
 ### Connections:
+
 - The DHT11 sensor is connected to the ESP32, which reads and transmits the data over MQTT and Wi-Fi.
 
 ## Software
 
 ### Tools and Technologies:
+
 - **AWS IoT Core**: Handles MQTT communication and message routing.
 - **AWS Lambda**: Processes data for storage and API requests.
 - **Amazon DynamoDB**: Stores sensor data for long-term persistence.
@@ -35,6 +38,7 @@ The solution is built to expand and scale, follow security best practices, and i
 - **SMHI Open Data API**: Provides external weather data.
 
 ### Codebase:
+
 - ESP32 firmware written in C++ (Arduino framework) with MQTT and DHT11 sensor libraries.
 - A custom Lambda function for polling AWS for ThingsBoard is written in JavaScript for DynamoDB integration.
 
@@ -64,11 +68,14 @@ The solution is built to expand and scale, follow security best practices, and i
   - Handles reconnections and memory monitoring.
 
 ### Prerequisites:
+
 1. Install **PlatformIO** in Visual Studio Code.
 2. Clone this repository.
-3. Configure your Wi-Fi and MQTT broker settings in the ESP32 firmware.
+3. Place the Amazon-generated certificates (`AmazonRootCA1.pem`, `client-certificate.pem.crt`, `private.pem.key`) in the data/certs folder. This ensures the certificates are uploaded to the ESP32 filesystem during the firmware flashing process.
+4. Configure your Wi-Fi credentials (`WIFI_SSID` and `WIFI_PASSWORD`) and AWS IoT Core endpoint (`AWS_IOT_ENDPOINT`) in the ESP32 firmware's `secrets.h` file.
 
 ### Steps:
+
 1. Connect the DHT11 sensor to the ESP32 following the wiring diagram.
 2. Flash the firmware to the ESP32 using PlatformIO.
 3. Monitor the serial console to verify MQTT data transmission.
@@ -76,10 +83,12 @@ The solution is built to expand and scale, follow security best practices, and i
 ## Setup AWS
 
 ### Prerequisites:
+
 - An active AWS account.
 - Permissions to create IoT Core, Lambda, DynamoDB, and Amplify resources.
 
 ### Steps:
+
 1. Set up **AWS IoT Core**:
    - Create a thing, certificate, and policy.
    - Configure an MQTT topic for the ESP32 to publish data.
@@ -92,10 +101,12 @@ The solution is built to expand and scale, follow security best practices, and i
    - Refer to the linked: [Cloud Sensor Integration Frontend-Amplify repository](https://github.com/PBergstrom90/Cloud_Sensor_Integration_Frontend-Amplify).
 
 ## Visualization AWS Amplify
+
 AWS Amplify is the primary visualization platform for this project. All the necessary setup files and instructions can be found in the dedicated repository:
 [Cloud Sensor Integration Frontend-Amplify](https://github.com/PBergstrom90/Cloud_Sensor_Integration_Frontend-Amplify)
 
 ## Visualization ThingsBoard
+
 1. Set up the Docker container for ThingsBoard. Import the `device.csv` and `telemetrydata.json` files for a basic dashboard and device setup.
 2. The `ThingsboardAWSLambda.js` script requires a `.env` file containing the following:  
    - `AWS_FUNCTION_URL` (Link to a `get_latest_telemetry` Lambda function, polling the latest data in DynamoDB).  
@@ -105,6 +116,7 @@ AWS Amplify is the primary visualization platform for this project. All the nece
 3. Run the `ThingsboardAWSLambda.js` script through the terminal.
 
 ## Security
+
 Security is a top priority in this project. The following measures were taken during development:
 - MQTT communication is secured with TLS certificates, automatically generated and signed by AWS.
 - AWS IAM policies restrict access to resources, granting only relevant permissions.
@@ -113,6 +125,7 @@ Security is a top priority in this project. The following measures were taken du
 - The Docker container is currently running in a local environment to avoid unauthorized access, but it can be migrated to AWS with additional configurations.
 
 ## Scalability and Future Improvements
+
 - **Multi-sensor support**: Add support for additional sensor types (e.g., CO2, pressure, light, or motion sensors) to diversify the types of telemetry data collected.
 - **Connecting multiple devices**: Utilize AWS IoT Fleet Provisioning to securely onboard and manage multiple IoT devices at scale. This will simplify device registration, certificate management, and onboarding for new devices.
 - **Improve Integration with external APIs**: Enhance the use of SMHI Open Data by incorporating historical data and weather predictions. Explore integration with other APIs (e.g., OpenWeatherMap) to enrich the system with more context-aware insights.
