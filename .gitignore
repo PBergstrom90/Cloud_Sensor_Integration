@@ -6,5 +6,4 @@ ESP32Sensor/.vscode/ipch
 ESP32Sensor/data/
 ESP32Sensor/include/secrets.h
 resources/Cloud_Sensor_Flowchart.drawio
-resources/flowchart.txt
 .env
