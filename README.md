@@ -207,9 +207,7 @@ Security is a top priority in this project. The following measures were taken du
 
 --
 
-### AWS Setup
-
-### ThingsBoard Setup
+### ThingsBoard Examples
 
 ![Application Screenshot](resources/ScriptOutput.jpg)  
 *“Visual confirmation that .JSON data is being forwarded to ThingsBoard.”*
