@@ -22,6 +22,7 @@
       - [1.3 Attach Rules](#13-attach-rules)
       - [2. Store Data in DynamoDB](#2-store-data-in-dynamodb)
       - [3. Process Lambda Function](#3-process-lambda-function)
+      - [4. (Optional) Use Amazon S3 for Storage](#4-optional-use-amazon-s3-for-storage)
 7. [Visualization AWS Amplify](#visualization-aws-amplify)
 8. [Visualization ThingsBoard](#visualization-thingsboard)
 9. [Security](#security)
@@ -30,21 +31,25 @@
     - [ESP32 Setup](#esp32-setup)
     - [AWS Setup](#aws-setup)
     - [ThingsBoard Setup](#thingsboard-setup)
-12. [Sources](#sources)
+12. [License](#license)
+13. [Sources](#sources)
 
 ## Overview
 
-A sensor project utilizing AWS IoT for secure MQTT data transmission, with data visualization and presentation handled by AWS Amplify and ThingsBoard. November 2024.
+This project leverages AWS IoT for secure MQTT data transmission, with data visualization and presentation handled through two distinct platforms: AWS Amplify and ThingsBoard. Developed in November 2024, the goal is to provide users with both internal temperature and humidity sensor data alongside external weather reports, all within a functional and user-friendly interface.
 
-This project demonstrates how an ESP32 device collects data from a DHT11 sensor, transmits it securely to AWS IoT Core, and makes the data accessible for visualization through two parallel systems:
+To explore different approaches to sensor data storage and visualization, this project implements two parallel setups:
 
-1. **AWS Amplify**: For real-time data monitoring and a primary user interface, presenting both device and SMHI weather information. Code is present in the [Cloud Sensor Integration Frontend-Amplify repository](https://github.com/PBergstrom90/Cloud_Sensor_Integration_Frontend-Amplify).
-2. **ThingsBoard**: For a secondary dashboard using a Dockerized local instance, presenting device information only.
+1. **AWS Amplify**: Serves as the primary user interface for real-time data monitoring, presenting both IoT device data and weather information from the SMHI Open Data API. The code for this solution is hosted in the: [Cloud Sensor Integration Frontend-Amplify repository](https://github.com/PBergstrom90/Cloud_Sensor_Integration_Frontend-Amplify).
+   
+2. **ThingsBoard**: Acts as a secondary dashboard running in a local Dockerized instance, focusing exclusively on IoT device data visualization.
 
-The solution is built to expand and scale, follow security best practices, and integrate with external APIs like the SMHI Open Data API.
+This solution is designed to be scalable, secure, and capable of integrating external APIs like the SMHI Open Data API, making it a robust and flexible platform for IoT sensor data management.
 
 ## Flowchart
 ![Application Flowchart](resources/Cloud_Sensor_Flowchart.png)
+
+This flowchart visualizes the entire application architecture, showcasing how AWS Amplify, IoT devices, and external APIs interact to provide a seamless user experience.
 
 ## Hardware
 
@@ -150,26 +155,34 @@ The solution is built to expand and scale, follow security best practices, and i
 
 ![Application Screenshot](resources/AWSRules.jpg)
 
-*“Attach message routing-rules, to forward the device data to multiple destinations. Like for example DynamoDB, S3 Cold Storage or an external Webhook-API”*
+*“Define message routing-rules, to forward the device data to multiple destinations. Like for example DynamoDB, S3 Cold Storage or the Amplify frontend”*
 
 #### 2. Store data in DynamoDB
 ![Application Screenshot](resources/AWSDynamoDB.jpg)
 
 *“Create a table in DynamoDB, that uses "deviceID" (thingname) as Partition key and "timestamp" as Sort key.”*
 
-#### 3 Process Lambda Function
+#### 3 Process Lambda Functions
 
 ![Application Screenshot](resources/AWSLambda.jpg)
 
 *“Use respective Lambda-functions to either fetch data for AWS Amplify, or Thingsboard. This image displays lambda triggered for Amplify”*
 
+#### 4. (Optional) Use Amazon S3 for Storage
 
-## Visualization AWS Amplify
+Amazon S3 can be used to archive telemetry data from IoT Core via message routing. This is useful for long-term storage solutions.
 
-AWS Amplify is the primary visualization platform for this project. All the necessary setup files and instructions can be found in the dedicated repository:
-[Cloud Sensor Integration Frontend-Amplify](https://github.com/PBergstrom90/Cloud_Sensor_Integration_Frontend-Amplify)
+![Application Screenshot](resources/S3Storage.jpg)
 
-## Visualization ThingsBoard
+*“Example of IoT Core routing telemetry data to Amazon S3 for long-term storage.”*
+
+## Setup AWS Amplify
+
+AWS Amplify is the primary visualization platform for this project. All the necessary setup files and instructions can be found in the dedicated repository: [Cloud Sensor Integration Frontend-Amplify](https://github.com/PBergstrom90/Cloud_Sensor_Integration_Frontend-Amplify).
+
+Amplify integrates with **AWS AppSync** and **API Gateway** to enable seamless data interaction between the frontend and backend. These services handle GraphQL queries, mutations, and REST endpoints for efficient data retrieval and visualization. Refer to the linked repository for detailed configuration steps.
+
+## Setup ThingsBoard
 
 1. Set up the Docker container for ThingsBoard. Import the `device.csv` and `telemetrydata.json` files for a basic dashboard and device setup.
 2. The `ThingsboardAWSLambda.js` script requires a `.env` file containing the following:  
@@ -217,7 +230,11 @@ Security is a top priority in this project. The following measures were taken du
 ![Application Screenshot](resources/ThingsboardDashboard.jpg)  
 *“ThingsBoard dashboard, presenting device data over time.”*
 
---
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
 
 ## Sources
 
