@@ -7,3 +7,4 @@ ESP32Sensor/data/
 ESP32Sensor/include/secrets.h
 resources/Cloud_Sensor_Flowchart.drawio
 .env
+node_modules/
